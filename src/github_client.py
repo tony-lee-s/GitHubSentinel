@@ -1,10 +1,12 @@
 # src/github_client.py
+import os
 
 import requests
 import datetime
 
 class GitHubClient:
     def __init__(self, token):
+        print('token---->', token)
         self.token = token
         self.headers = {'Authorization': f'token {self.token}'}
 
@@ -40,6 +42,9 @@ class GitHubClient:
         date_str = datetime.datetime.now().strftime('%Y-%m-%d')
         issues = self.fetch_issues(repo)
         pull_requests = self.fetch_pull_requests(repo)
+        directory = 'daily_progress'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         filename = f'daily_progress/{repo.replace("/", "_")}_{date_str}.md'
         with open(filename, 'w') as f:
             f.write(f"# {repo} Daily Progress - {date_str}\n\n")
