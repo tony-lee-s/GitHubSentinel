@@ -1,12 +1,16 @@
 import os
 import json
-from openai import OpenAI  # 导入OpenAI库用于访问GPT模型
+from openai import AzureOpenAI  # 导入OpenAI库用于访问GPT模型
 from logger import LOG  # 导入日志模块
 
 class LLM:
     def __init__(self):
         # 创建一个OpenAI客户端实例
-        self.client = OpenAI()
+        self.client = AzureOpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"),
+            api_version="2024-02-15-preview",
+            azure_endpoint=os.getenv("OPENAI_API_BASE")
+        )
         # 从TXT文件加载提示信息
         with open("prompts/report_prompt.txt", "r", encoding='utf-8') as file:
             self.system_prompt = file.read()
