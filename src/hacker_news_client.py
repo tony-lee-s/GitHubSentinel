@@ -6,7 +6,7 @@ class HackerNewsClient:
 
     def fetch_hackernews_top_stories(self):
         url = 'https://news.ycombinator.com/'
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()  # 检查请求是否成功
 
         soup = BeautifulSoup(response.text, 'html.parser')

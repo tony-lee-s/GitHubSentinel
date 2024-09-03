@@ -1,3 +1,5 @@
+import json
+
 import schedule # 导入 schedule 实现定时任务执行器
 import time  # 导入time库，用于控制时间间隔
 import signal  # 导入signal库，用于信号处理
@@ -38,7 +40,7 @@ def github_job(subscription_manager, github_client, report_generator, notifier, 
 def hacker_news_job(hacker_news_client, llm, notifier):
     LOG.info("[开始执行Hacker News定时任务]")
     top_stories = hacker_news_client.fetch_hackernews_top_stories()
-    report = llm.generate_hacker_news_report(top_stories)
+    report = llm.generate_hacker_news_report(json.dumps(top_stories))
     notifier.notify("Hacker News 进展简报", report)
     LOG.info("[Hacker News定时任务执行完毕]")
 
