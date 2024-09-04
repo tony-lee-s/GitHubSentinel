@@ -8,18 +8,18 @@ class Notifier:
     def __init__(self, email_settings):
         self.email_settings = email_settings
     
-    def notify(self, repo, report):
+    def notify(self, title, report):
         if self.email_settings:
-            self.send_email(repo, report)
+            self.send_email(title, report)
         else:
             LOG.warning("邮件设置未配置正确，无法发送通知")
     
-    def send_email(self, repo, report):
+    def send_email(self, title, report):
         LOG.info("准备发送邮件")
         msg = MIMEMultipart()
         msg['From'] = self.email_settings['from']
         msg['To'] = self.email_settings['to']
-        msg['Subject'] = f"[GitHubSentinel]{repo} 进展简报"
+        msg['Subject'] = title
         
         # 将Markdown内容转换为HTML
         html_report = markdown2.markdown(report)
@@ -33,6 +33,7 @@ class Notifier:
                 LOG.info("邮件发送成功！")
         except Exception as e:
             LOG.error(f"发送邮件失败：{str(e)}")
+
 
 if __name__ == '__main__':
     from config import Config
