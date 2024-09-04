@@ -110,13 +110,13 @@ class LLM:
         return self.generate_report("hacker_news_prompt.txt", markdown_content, dry_run)
 
 
-
 if __name__ == '__main__':
     from config import Config  # 导入配置管理类
+
     config = Config()
     llm = LLM(config)
 
-    markdown_content="""
+    markdown_content = """
 # Progress for langchain-ai/langchain (2024-08-20 to 2024-08-21)
 
 

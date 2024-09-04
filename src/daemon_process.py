@@ -1,9 +1,8 @@
-import json
-
 import schedule # 导入 schedule 实现定时任务执行器
 import time  # 导入time库，用于控制时间间隔
 import signal  # 导入signal库，用于信号处理
 import sys  # 导入sys库，用于执行系统相关的操作
+import json
 
 from bs4 import BeautifulSoup
 import requests
@@ -76,7 +75,6 @@ def main():
     except Exception as e:
         LOG.error(f"主进程发生异常: {str(e)}")
         sys.exit(1)
-
 
 
 if __name__ == '__main__':
