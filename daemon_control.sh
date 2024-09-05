@@ -25,6 +25,7 @@ start() {
     echo "Starting $DAEMON_NAME..."
     # 确保 PID 文件目录存在
     mkdir -p $(dirname $PID_FILE)
+    mkdir -p $(dirname $LOG_FILE)
     # 使用 nohup 命令在后台运行 Python 脚本，并将输出重定向到日志文件
     nohup python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
     # 将守护进程的 PID 写入文件
