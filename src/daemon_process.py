@@ -4,6 +4,10 @@ import os   # 导入os模块用于文件和目录操作
 import signal  # 导入signal库，用于信号处理
 import sys  # 导入sys库，用于执行系统相关的操作
 from datetime import datetime  # 导入 datetime 模块用于获取当前日期
+import json
+
+from bs4 import BeautifulSoup
+import requests
 
 from config import Config  # 导入配置管理类
 from github_client import GitHubClient  # 导入GitHub客户端类，处理GitHub API请求
@@ -11,6 +15,7 @@ from hacker_news_client import HackerNewsClient
 from notifier import Notifier  # 导入通知器类，用于发送通知
 from report_generator import ReportGenerator  # 导入报告生成器类
 from llm import LLM  # 导入语言模型类，可能用于生成报告内容
+from hacker_news_client import HackerNewsClient
 from subscription_manager import SubscriptionManager  # 导入订阅管理器类，管理GitHub仓库订阅
 from logger import LOG  # 导入日志记录器
 
@@ -19,6 +24,7 @@ def graceful_shutdown(signum, frame):
     # 优雅关闭程序的函数，处理信号时调用
     LOG.info("[优雅退出]守护进程接收到终止信号")
     sys.exit(0)  # 安全退出程序
+
 
 def github_job(subscription_manager, github_client, report_generator, notifier, days):
     LOG.info("[开始执行定时任务]GitHub Repo 项目进展报告")
@@ -52,6 +58,14 @@ def hn_daily_job(hacker_news_client, report_generator, notifier):
     LOG.info(f"[定时任务执行完毕]")
 
 
+def hacker_news_job(hacker_news_client, llm, notifier):
+    LOG.info("[开始执行Hacker News定时任务]")
+    top_stories = hacker_news_client.fetch_hackernews_top_stories()
+    report = llm.generate_hacker_news_report(json.dumps(top_stories))
+    notifier.notify("Hacker News 进展简报", report)
+    LOG.info("[Hacker News定时任务执行完毕]")
+
+
 def main():
     # 设置信号处理器
     signal.signal(signal.SIGTERM, graceful_shutdown)
@@ -72,7 +86,7 @@ def main():
     schedule.every(config.freq_days).days.at(
         config.exec_time
     ).do(github_job, subscription_manager, github_client, report_generator, notifier, config.freq_days)
-    
+
     # 安排 hn_topic_job 每4小时执行一次，从0点开始
     schedule.every(4).hours.at(":00").do(hn_topic_job, hacker_news_client, report_generator)
 
@@ -87,7 +101,6 @@ def main():
     except Exception as e:
         LOG.error(f"主进程发生异常: {str(e)}")
         sys.exit(1)
-
 
 
 if __name__ == '__main__':

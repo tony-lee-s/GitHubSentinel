@@ -12,7 +12,20 @@ PID_FILE="./run/$DAEMON_NAME.pid"
 
 # 启动守护进程的函数
 start() {
+    if [ -f $PID_FILE ]; then
+          PID=$(cat $PID_FILE)
+          if ps -p $PID > /dev/null; then
+              echo "$DAEMON_NAME is already running."
+              exit 1
+          else
+              echo "PID file exists but $DAEMON_NAME is not running. Starting new process..."
+          fi
+      fi
+
     echo "Starting $DAEMON_NAME..."
+    # 确保 PID 文件目录存在
+    mkdir -p $(dirname $PID_FILE)
+    mkdir -p $(dirname $LOG_FILE)
     # 使用 nohup 命令在后台运行 Python 脚本，并将输出重定向到日志文件
     nohup python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
     # 将守护进程的 PID 写入文件

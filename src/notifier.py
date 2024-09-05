@@ -19,7 +19,7 @@ class Notifier:
             self.send_email(subject, report)
         else:
             LOG.warning("邮件设置未配置正确，无法发送 GitHub 报告通知")
-    
+
     def notify_hn_report(self, date, report):
         """
         发送 Hacker News 每日技术趋势报告邮件
@@ -51,6 +51,7 @@ class Notifier:
                 LOG.info("邮件发送成功！")
         except Exception as e:
             LOG.error(f"发送邮件失败：{str(e)}")
+
 
 if __name__ == '__main__':
     from config import Config

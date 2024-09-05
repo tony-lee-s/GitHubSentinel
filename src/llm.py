@@ -1,7 +1,9 @@
 import json
 import requests
-from openai import OpenAI  # 导入OpenAI库用于访问GPT模型
+from openai import AzureOpenAI  # 导入OpenAI库用于访问GPT模型
 from logger import LOG  # 导入日志模块
+import os
+
 
 class LLM:
     def __init__(self, config):
@@ -13,7 +15,12 @@ class LLM:
         self.config = config
         self.model = config.llm_model_type.lower()  # 获取模型类型并转换为小写
         if self.model == "openai":
-            self.client = OpenAI()  # 创建OpenAI客户端实例
+            # 创建一个OpenAI客户端实例
+            self.client = AzureOpenAI(
+                api_key=os.getenv("OPENAI_API_KEY"),
+                api_version="2024-02-15-preview",
+                azure_endpoint=os.getenv("OPENAI_API_BASE")
+            )
         elif self.model == "ollama":
             self.api_url = config.ollama_api_url  # 设置Ollama API的URL
         else:
@@ -92,14 +99,20 @@ class LLM:
                 raise ValueError("Ollama API 返回的响应结构无效")
         except Exception as e:
             LOG.error(f"生成报告时发生错误：{e}")
-            raise
+
+    def generate_daily_report(self, markdown_content, dry_run=False):
+        return self.generate_report("report_prompt.txt", markdown_content, dry_run)
+
+    def generate_hacker_news_report(self, markdown_content, dry_run=False):
+        return self.generate_report("hacker_news_prompt.txt", markdown_content, dry_run)
 
 if __name__ == '__main__':
     from config import Config  # 导入配置管理类
+
     config = Config()
     llm = LLM(config)
 
-    markdown_content="""
+    markdown_content = """
 # Progress for langchain-ai/langchain (2024-08-20 to 2024-08-21)
 
 ## Issues Closed in the Last 1 Days

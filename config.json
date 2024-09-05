@@ -6,11 +6,11 @@
         "progress_execution_time": "08:00"
     },
     "email":  {
-        "smtp_server": "smtp.exmail.qq.com",
+        "smtp_server": "smtp.gmail.com",
         "smtp_port": 465,
-        "from": "pjt@zaijidata.com",
+        "from": "lds8988@gmail.com",
         "password": "",
-        "to": "test@zaijidata.com"
+        "to": "lds8988@qq.com"
     },
     "llm": {
         "model_type": "ollama",

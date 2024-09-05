@@ -170,3 +170,10 @@ run/*
 test_results.txt
 prompts/*_bak.txt
 nohup.out
+/.idea/.gitignore
+/.idea/GitHubSentinel.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
+/flagged/log.csv
