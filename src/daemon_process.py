@@ -52,6 +52,8 @@ def hn_daily_job(hacker_news_client, report_generator, notifier):
     date = datetime.now().strftime('%Y-%m-%d')
     # 生成每日汇总报告的目录路径
     directory_path = os.path.join('hacker_news', date)
+    # 确保目录存在
+    os.makedirs(directory_path, exist_ok=True)
     # 生成每日汇总报告并保存
     report, _ = report_generator.generate_hn_daily_report(directory_path)
     notifier.notify_hn_report(date, report)

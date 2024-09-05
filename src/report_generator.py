@@ -81,6 +81,12 @@ class ReportGenerator:
         """
         聚合目录下所有以 '_topic.md' 结尾的 Markdown 文件内容，生成每日汇总报告的输入。
         """
+
+        # 判断目录是否存在
+        if not os.path.exists(directory_path):
+            LOG.error(f"目录不存在: {directory_path}")
+            raise FileNotFoundError(f"目录未找到: {directory_path}")
+
         markdown_content = ""
         for filename in os.listdir(directory_path):
             if filename.endswith("_topic.md"):
@@ -97,7 +103,7 @@ if __name__ == '__main__':
     llm = LLM(config)
     report_generator = ReportGenerator(llm, config.report_types)
 
-    # hn_hours_file = "./hacker_news/2024-09-01/14.md"
+    # hn_hours_file = "./hacker_news/2024-09-01/14.md"sudo
     hn_daily_dir = "./hacker_news/2024-09-01/"
 
     # report, report_file_path = report_generator.generate_hn_topic_report(hn_hours_file)

@@ -4,10 +4,11 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from logger import LOG
 
+
 class Notifier:
     def __init__(self, email_settings):
         self.email_settings = email_settings
-    
+
     def notify_github_report(self, repo, report):
         """
         发送 GitHub 项目报告邮件
@@ -31,20 +32,23 @@ class Notifier:
             self.send_email(subject, report)
         else:
             LOG.warning("邮件设置未配置正确，无法发送 Hacker News 报告通知")
-    
+
     def send_email(self, subject, report):
         LOG.info(f"准备发送邮件:{subject}")
         msg = MIMEMultipart()
         msg['From'] = self.email_settings['from']
         msg['To'] = self.email_settings['to']
         msg['Subject'] = subject
-        
+
         # 将Markdown内容转换为HTML
         html_report = markdown2.markdown(report)
 
         msg.attach(MIMEText(html_report, 'html'))
         try:
-            with smtplib.SMTP_SSL(self.email_settings['smtp_server'], self.email_settings['smtp_port']) as server:
+            with (smtplib.SMTP_SSL(self.email_settings['smtp_server'],
+                                   self.email_settings['smtp_port'],
+                                   timeout=10)
+                  as server):
                 LOG.debug("登录SMTP服务器")
                 server.login(msg['From'], self.email_settings['password'])
                 server.sendmail(msg['From'], msg['To'], msg.as_string())
@@ -55,6 +59,7 @@ class Notifier:
 
 if __name__ == '__main__':
     from config import Config
+
     config = Config()
     notifier = Notifier(config.email)
 
