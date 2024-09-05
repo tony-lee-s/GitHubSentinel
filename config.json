@@ -6,9 +6,9 @@
         "progress_execution_time": "08:00"
     },
     "email":  {
-        "smtp_server": "smtp.gmail.com",
+        "smtp_server": "smtp.sina.com",
         "smtp_port": 465,
-        "from": "lds8988@gmail.com",
+        "from": "lds8988@sina.com",
         "password": "",
         "to": "lds8988@qq.com"
     },

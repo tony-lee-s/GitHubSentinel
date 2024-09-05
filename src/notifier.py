@@ -1,4 +1,6 @@
 import smtplib
+import ssl
+
 import markdown2
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -35,6 +37,10 @@ class Notifier:
 
     def send_email(self, subject, report):
         LOG.info(f"准备发送邮件:{subject}")
+
+        context = ssl.create_default_context()
+        context.set_ciphers('DEFAULT@SECLEVEL=1')
+
         msg = MIMEMultipart()
         msg['From'] = self.email_settings['from']
         msg['To'] = self.email_settings['to']
@@ -47,8 +53,8 @@ class Notifier:
         try:
             with (smtplib.SMTP_SSL(self.email_settings['smtp_server'],
                                    self.email_settings['smtp_port'],
-                                   timeout=10)
-                  as server):
+                                   timeout=10,
+                                   context=context) as server):
                 LOG.debug("登录SMTP服务器")
                 server.login(msg['From'], self.email_settings['password'])
                 server.sendmail(msg['From'], msg['To'], msg.as_string())
