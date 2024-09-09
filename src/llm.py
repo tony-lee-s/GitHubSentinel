@@ -1,5 +1,6 @@
 import json
 import requests
+from distributed.utils_test import throws
 from openai import AzureOpenAI  # 导入OpenAI库用于访问GPT模型
 from logger import LOG  # 导入日志模块
 import os
@@ -99,6 +100,7 @@ class LLM:
                 raise ValueError("Ollama API 返回的响应结构无效")
         except Exception as e:
             LOG.error(f"生成报告时发生错误：{e}")
+            raise e
 
     def generate_daily_report(self, markdown_content, dry_run=False):
         return self.generate_report("report_prompt.txt", markdown_content, dry_run)

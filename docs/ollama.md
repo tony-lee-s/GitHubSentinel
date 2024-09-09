@@ -187,7 +187,7 @@ docker run -d --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 114
 现在，你可以运行一个模型：
 
 ```bash
-docker exec -it ollama ollama run llama3.1
+sudo docker exec -it ollama ollama run llama3.1
 ```
 
 ---
