@@ -1,12 +1,11 @@
 import gradio as gr  # 导入gradio库用于创建GUI
 
 from config import Config  # 导入配置管理模块
-from github_client import GitHubClient  # 导入用于GitHub API操作的客户端
-from hacker_news_client import HackerNewsClient
+from src.clients.github_client import GitHubClient  # 导入用于GitHub API操作的客户端
+from src.clients.hacker_news_client import HackerNewsClient
 from report_generator import ReportGenerator  # 导入报告生成器模块
 from llm import LLM  # 导入可能用于处理语言模型的LLM类
 from subscription_manager import SubscriptionManager  # 导入订阅管理器
-from logger import LOG  # 导入日志记录器
 
 # 创建各个组件的实例
 config = Config()

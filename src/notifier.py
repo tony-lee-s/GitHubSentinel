@@ -35,6 +35,13 @@ class Notifier:
         else:
             LOG.warning("邮件设置未配置正确，无法发送 Hacker News 报告通知")
 
+    def notify_x_report(self, user, report):
+        if self.email_settings:
+            subject = f"[X] {user} 每日总结"
+            self.send_email(subject, report)
+        else:
+            LOG.warning("邮件设置未配置正确，无法发送 GitHub 报告通知")
+
     def send_email(self, subject, report):
         LOG.info(f"准备发送邮件:{subject}")
 

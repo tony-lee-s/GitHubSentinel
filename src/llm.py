@@ -102,12 +102,6 @@ class LLM:
             LOG.error(f"生成报告时发生错误：{e}")
             raise e
 
-    def generate_daily_report(self, markdown_content, dry_run=False):
-        return self.generate_report("report_prompt.txt", markdown_content, dry_run)
-
-    def generate_hacker_news_report(self, markdown_content, dry_run=False):
-        return self.generate_report("hacker_news_prompt.txt", markdown_content, dry_run)
-
 if __name__ == '__main__':
     from config import Config  # 导入配置管理类
 

@@ -19,6 +19,12 @@ class Config:
             self.freq_days = github_config.get('progress_frequency_days', 1)
             self.exec_time = github_config.get('progress_execution_time', "08:00")
 
+            x_config = config.get('x', {})
+            self.x_user = x_config.get('user')
+            self.x_email = x_config.get('email')
+            self.x_pwd = os.getenv('X_PWD', x_config.get('pwd'))
+            self.x_subscriptions = x_config.get('subscriptions')
+
             # 加载 LLM 相关配置
             llm_config = config.get('llm', {})
             self.llm_model_type = llm_config.get('model_type', 'openai')

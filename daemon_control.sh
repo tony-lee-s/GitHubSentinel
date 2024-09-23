@@ -27,7 +27,7 @@ start() {
     mkdir -p $(dirname $PID_FILE)
     mkdir -p $(dirname $LOG_FILE)
     # 使用 nohup 命令在后台运行 Python 脚本，并将输出重定向到日志文件
-    nohup python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
+    PYTHONPATH=$(pwd) nohup python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
     # 将守护进程的 PID 写入文件
     echo $! > $PID_FILE
     echo "$DAEMON_NAME started."

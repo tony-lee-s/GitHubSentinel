@@ -21,8 +21,15 @@
     "report_types": [
         "github",
         "hacker_news_hours_topic",
-        "hacker_news_daily_report"
+        "hacker_news_daily_report",
+        "x"
     ],
+    "x": {
+        "user": "",
+        "email": "",
+        "pwd": "",
+        "subscriptions": ["elonmusk", "BBCBreaking"]
+    },
     "slack": {
         "webhook_url": "your_slack_webhook_url"
     }

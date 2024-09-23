@@ -177,3 +177,5 @@ nohup.out
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
 /flagged/log.csv
+/cookies.json
+/daily_tweets/

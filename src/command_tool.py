@@ -1,7 +1,7 @@
 import shlex  # 导入shlex库，用于正确解析命令行输入
 
 from config import Config  # 从config模块导入Config类，用于配置管理
-from github_client import GitHubClient  # 从github_client模块导入GitHubClient类，用于GitHub API操作
+from src.clients.github_client import GitHubClient  # 从github_client模块导入GitHubClient类，用于GitHub API操作
 from report_generator import ReportGenerator  # 从report_generator模块导入ReportGenerator类，用于报告生成
 from llm import LLM  # 从llm模块导入LLM类，可能用于语言模型相关操作
 from subscription_manager import SubscriptionManager  # 从subscription_manager模块导入SubscriptionManager类，管理订阅
