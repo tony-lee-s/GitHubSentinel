@@ -50,9 +50,16 @@ async def x_job(x_client, subscriptions, report_generator, notifier):
 
 def run_x_job(x_client, subscriptions, report_generator, notifier):
     try:
-        asyncio.create_task(x_job(x_client, subscriptions, report_generator, notifier))
-    except RuntimeError as e:
+        loop = asyncio.get_event_loop()  # 获取当前事件循环
+        if loop.is_closed():  # 如果事件循环已关闭，创建新的事件循环
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        loop.run_until_complete(x_job(x_client, subscriptions, report_generator, notifier))  # 运行异步任务
+    except Exception as e:
         LOG.error(f"运行x_job时发生错误：{e}")
+    finally:
+        if not loop.is_closed():  # 仅在未关闭时关闭事件循环
+            loop.close()  # 关闭事件循环
 
 def hn_topic_job(hacker_news_client, report_generator):
     LOG.info("[开始执行定时任务]Hacker News 热点话题跟踪")
@@ -95,7 +102,7 @@ def main():
 
     # 启动时立即执行（如不需要可注释）
     # github_job(subscription_manager, github_client, report_generator, notifier, config.freq_days)
-    asyncio.run(x_job(x_client, config.x_subscriptions, report_generator, notifier))
+    # asyncio.run(x_job(x_client, config.x_subscriptions, report_generator, notifier))
     # hn_daily_job(report_generator, notifier)
 
     # 安排 GitHub 的定时任务
